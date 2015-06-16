@@ -13,6 +13,12 @@ if (Meteor.isClient) {
     },
     range: function() {
       return JSON.stringify(this.range);
+    },
+    currentRange: function() {
+      return JSON.stringify(Session.get('currentRange'));
+    },
+    currentNote: function() {
+      return Session.get('currentNote');
     }
   });
 
@@ -22,6 +28,16 @@ if (Meteor.isClient) {
       var currentNote = Session.get('currentNote');
       notes.push(currentNote);
       Session.set('notes', notes);
+    },
+    'mouseup p': function() {
+      var selection = window.getSelection();
+      if (!selection) return;
+      var range = selection.getRangeAt(0);
+      Session.set('currentRange', {
+        container: range.startContainer.parentNode.id,
+        startOffset: range.startOffset,
+        endOffset: range.endOffset
+      });
     },
     'keyup #add-note': function(event){
       var range = Session.get('currentRange');

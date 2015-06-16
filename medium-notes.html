@@ -17,6 +17,9 @@
         <button>Add Note</button>
         <p id="1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat vulputate tortor, vel vulputate urna mollis ac. Vivamus viverra urna orci, semper ultrices eros convallis ut. Nunc a magna sit amet nibh ornare egestas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id pellentesque magna, sit amet efficitur purus. Cras sit amet lobortis nisl. Aliquam varius nisl dui, in blandit elit tempor vitae. Aenean laoreet accumsan tempor. Sed consequat urna ut odio elementum, in suscipit mauris imperdiet. Sed tempor libero quis hendrerit ultrices. Nunc ac accumsan metus.</p>
         <div>
+          <div>
+            currentRange: {{currentRange}} - currentNote: {{currentNote.text}}
+          </div>
           <div>notes count: {{notesCount}}</div>
           {{#each notes}}
             <div>note: {{range}} - {{text}}</div>
