@@ -29,6 +29,10 @@ if (Meteor.isClient) {
       notes.push(currentNote);
       Session.set('notes', notes);
     },
+    'click .comment': function(event) {
+      $('.paragraph-controls').removeClass('hidden');
+      $('.notes-list').removeClass('hidden');
+    },
     'mouseup p': function() {
       var selection = window.getSelection();
       if (!selection) return;

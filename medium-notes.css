@@ -1,1 +1,8 @@
-/* CSS declarations go here */
+.medium-notes {
+	text-align: justify;
+	margin: 0 auto;
+}
+
+.comment:hover {
+	cursor: pointer;
+}
