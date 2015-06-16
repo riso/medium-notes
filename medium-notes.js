@@ -1,19 +1,47 @@
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+
+  Session.setDefault('notes', []);
+  Session.setDefault('currentRange', {});
+  Session.setDefault('currentNote', '');
 
   Template.main.helpers({
-    counter: function () {
-      return Session.get('counter');
+    notes: function() {
+      return Session.get('notes');
+    },
+    notesCount: function() {
+      return Session.get('notes').length;
+    },
+    range: function() {
+      return JSON.stringify(this.range);
     }
   });
 
   Template.main.events({
     'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+      var notes = Session.get('notes');
+      var currentNote = Session.get('currentNote');
+      notes.push(currentNote);
+      Session.set('notes', notes);
+    },
+    'keyup #add-note': function(event){
+      var range = Session.get('currentRange');
+      Session.set('currentNote', {
+        range: range,
+        text: event.target.value
+      });
     }
   });
+
+  Template.main.rendered = function() {
+    var defaultRange = document.createRange();
+    defaultRange.selectNodeContents(document.getElementsByTagName('p')[0]);
+
+    Session.set('currentRange', {
+      container: defaultRange.startContainer.id,
+      startOffset: defaultRange.startOffset,
+      endOffset: defaultRange.endOffset
+    });
+  };
 }
 
 if (Meteor.isServer) {
