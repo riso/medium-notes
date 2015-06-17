@@ -1,8 +1,14 @@
 if (Meteor.isClient) {
 
   Session.setDefault('notes', []);
-  Session.setDefault('currentRange', {});
-  Session.setDefault('currentNote', '');
+
+  var defaultRange = {
+    container: "1",
+    startOffset: 0,
+    endOffset: 0
+  };
+
+  Session.setDefault('currentRange', defaultRange);
 
   var highlightWrapper = document.createElement("span");
   highlightWrapper.className = "highlight";
@@ -19,22 +25,20 @@ if (Meteor.isClient) {
     },
     currentRange: function() {
       return JSON.stringify(Session.get('currentRange'));
-    },
-    currentNote: function() {
-      return Session.get('currentNote');
     }
   });
 
   Template.main.events({
-    'click button': function () {
+    'click #add-node': function () {
+      var text = $('#note-editor').val();
+      $('#note-editor').val('');
       var notes = Session.get('notes');
-      var currentNote = Session.get('currentNote');
-      notes.push(currentNote);
+      notes.push({range: Session.get('currentRange'), text: text});
       Session.set('notes', notes);
+      Session.set('currentRange', defaultRange);
     },
     'click .note': function(event) {
-      $('.paragraph-controls').removeClass('hidden');
-      $('.notes-list').removeClass('hidden');
+      $('.paragraph-controls').toggleClass('hidden');
     },
     'mouseup p': function() {
       var selection = window.getSelection();
@@ -46,17 +50,10 @@ if (Meteor.isClient) {
         endOffset: range.endOffset
       });
     },
-    'keyup #add-note': function(event) {
-      var range = Session.get('currentRange');
-      Session.set('currentNote', {
-        range: range,
-        text: event.target.value
-      });
-    },
     'mouseenter .note-text': function() {
       var r = this.range;
       var range = document.createRange();
-      var node = $('#' + r.container)[0].childNodes[0];
+      var node = $('#' + r.container).get(0).childNodes[0];
       range.setStart(node, r.startOffset);
       range.setEnd(node, r.endOffset);
       range.surroundContents(highlightWrapper);
@@ -69,7 +66,7 @@ if (Meteor.isClient) {
     },
     'mouseleave .note-text': function() {
       $('.highlight').contents().unwrap();
-      
+
       var par = $('#' + this.range.container);
       var content = '';
       par.contents().each(function(i, el){
@@ -79,16 +76,6 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.main.rendered = function() {
-    var defaultRange = document.createRange();
-    defaultRange.selectNodeContents(document.getElementsByTagName('p')[0]);
-
-    Session.set('currentRange', {
-      container: defaultRange.startContainer.id,
-      startOffset: defaultRange.startOffset,
-      endOffset: defaultRange.endOffset
-    });
-  };
 }
 
 if (Meteor.isServer) {
