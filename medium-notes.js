@@ -4,6 +4,9 @@ if (Meteor.isClient) {
   Session.setDefault('currentRange', {});
   Session.setDefault('currentNote', '');
 
+  var highlightWrapper = document.createElement("span");
+  highlightWrapper.className = "highlight";
+
   Template.main.helpers({
     notes: function() {
       return Session.get('notes');
@@ -29,7 +32,7 @@ if (Meteor.isClient) {
       notes.push(currentNote);
       Session.set('notes', notes);
     },
-    'click .comment': function(event) {
+    'click .note': function(event) {
       $('.paragraph-controls').removeClass('hidden');
       $('.notes-list').removeClass('hidden');
     },
@@ -43,12 +46,36 @@ if (Meteor.isClient) {
         endOffset: range.endOffset
       });
     },
-    'keyup #add-note': function(event){
+    'keyup #add-note': function(event) {
       var range = Session.get('currentRange');
       Session.set('currentNote', {
         range: range,
         text: event.target.value
       });
+    },
+    'mouseenter .note-text': function() {
+      var r = this.range;
+      var range = document.createRange();
+      var node = $('#' + r.container)[0].childNodes[0];
+      range.setStart(node, r.startOffset);
+      range.setEnd(node, r.endOffset);
+      range.surroundContents(highlightWrapper);
+
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      sel.collapse(node, 0);
+    },
+    'mouseleave .note-text': function() {
+      $('.highlight').contents().unwrap();
+      
+      var par = $('#' + this.range.container);
+      var content = '';
+      par.contents().each(function(i, el){
+        content += el.textContent;
+      });
+      par.html(content);
     }
   });
 
