@@ -6,3 +6,20 @@
 .comment:hover {
 	cursor: pointer;
 }
+.comment:after {
+	content: attr(data-count);
+	position: relative;
+	left: -6px;
+	top: -7px;
+	font-size: 10px;
+	text-align: center;
+	border: 1px solid #890405;
+	color: #fff;
+	font-weight: bold;
+	min-width: 20px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #c91106;
+	padding: 1px 2px;
+}
