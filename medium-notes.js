@@ -62,6 +62,9 @@ if (Meteor.isClient) {
     },
     currentRange: function() {
       return JSON.stringify(Session.get('currentRange'));
+    },
+    author: function() {
+      return "Anonymous";
     }
   });
 
@@ -74,7 +77,7 @@ if (Meteor.isClient) {
       Session.set('notes', notes);
       Session.set('currentRange', defaultRange);
     },
-    'click .note': function(event) {
+    'click .notes-counter': function(event) {
       $('.paragraph-controls').toggleClass('active');
     },
     'mousedown p': clearHighlight,
