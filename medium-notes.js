@@ -13,6 +13,43 @@ if (Meteor.isClient) {
   var highlightWrapper = document.createElement("span");
   highlightWrapper.className = "highlight";
 
+  function clearHighlight() {
+    var highlight = $('.highlight');
+    if (!highlight.length) return;
+
+    var par = highlight.parent();
+
+    highlight.contents().unwrap();
+    var content = '';
+    par.contents().each(function(i, el){
+      content += el.textContent;
+    });
+    par.html(content);
+  }
+
+  function highlightRange(range) {
+    clearHighlight();
+    var r = document.createRange();
+    var node = $('#' + range.container).get(0).childNodes[0];
+    r.setStart(node, range.startOffset);
+    r.setEnd(node, range.endOffset);
+    r.surroundContents(highlightWrapper);
+
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+
+    sel.collapse(node, 0);
+  }
+
+  function serializeRange(range) {
+    return {
+      container: range.startContainer.parentNode.id,
+      startOffset: range.startOffset,
+      endOffset: range.endOffset
+    };
+  }
+
   Template.main.helpers({
     notes: function() {
       return Session.get('notes');
@@ -40,40 +77,25 @@ if (Meteor.isClient) {
     'click .note': function(event) {
       $('.paragraph-controls').toggleClass('active');
     },
+    'mousedown p': clearHighlight,
     'mouseup p': function() {
       var selection = window.getSelection();
       if (!selection) return;
-      var range = selection.getRangeAt(0);
-      Session.set('currentRange', {
-        container: range.startContainer.parentNode.id,
-        startOffset: range.startOffset,
-        endOffset: range.endOffset
-      });
+
+      var range = serializeRange(selection.getRangeAt(0));
+      Session.set('currentRange', range);
+
+      $('.paragraph-controls').addClass('active');
+
+      $('#note-editor').focus();
     },
     'mouseenter .note-text': function() {
-      var r = this.range;
-      var range = document.createRange();
-      var node = $('#' + r.container).get(0).childNodes[0];
-      range.setStart(node, r.startOffset);
-      range.setEnd(node, r.endOffset);
-      range.surroundContents(highlightWrapper);
-
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-
-      sel.collapse(node, 0);
+      highlightRange(this.range);
     },
-    'mouseleave .note-text': function() {
-      $('.highlight').contents().unwrap();
-
-      var par = $('#' + this.range.container);
-      var content = '';
-      par.contents().each(function(i, el){
-        content += el.textContent;
-      });
-      par.html(content);
-    }
+    'focus #note-editor': function(event) {
+      highlightRange(Session.get('currentRange'));
+    },
+    'mouseleave .note-text': clearHighlight
   });
 
 }
