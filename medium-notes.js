@@ -38,7 +38,7 @@ if (Meteor.isClient) {
       Session.set('currentRange', defaultRange);
     },
     'click .note': function(event) {
-      $('.paragraph-controls').toggleClass('hidden');
+      $('.paragraph-controls').toggleClass('active');
     },
     'mouseup p': function() {
       var selection = window.getSelection();
