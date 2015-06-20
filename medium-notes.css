@@ -24,6 +24,11 @@ hr {
 	margin-bottom: 10px;
 }
 
+h2 {
+	font-size: 60px;
+	font-weight: 700;
+}
+
 /* Application styles */
 
 p {
