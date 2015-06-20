@@ -64,6 +64,11 @@ hr:last-of-type {
 	background: rgba(255, 145, 8, 1);
 }
 
+.notes-container {
+	padding: 0 0 0 28px;
+	height: 0;
+}
+
 .slidedown {
 	-webkit-transform: scaleY(0);
 	-o-transform: scaleY(0);

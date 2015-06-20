@@ -50,12 +50,22 @@ if (Meteor.isClient) {
     };
   }
 
+  function currentParagraphNotesContainer(target) {
+    return $(target).parents('.paragraph-notes');
+  }
+
+  function currentParagraphNotes(id) {
+    return _.filter(Session.get('notes'), function(note) {
+      return note.container == id;
+    });
+  }
+
   Template.main.helpers({
-    notes: function() {
-      return Session.get('notes');
+    notes: function(context) {
+      return currentParagraphNotes(context.hash.id);
     },
-    notesCount: function() {
-      return Session.get('notes').length;
+    notesCount: function(context) {
+      return currentParagraphNotes(context.hash.id).length;
     },
     range: function() {
       return JSON.stringify(this.range);
@@ -69,33 +79,42 @@ if (Meteor.isClient) {
   });
 
   Template.main.events({
-    'click #add-node': function () {
-      var text = $('#note-editor').val();
-      $('#note-editor').val('');
+    'click .add-note': function (event) {
+      var text = currentParagraphNotesContainer(event.target).find('.note-editor').val();
+      $('.note-editor').val('');
       var notes = Session.get('notes');
-      notes.push({range: Session.get('currentRange'), text: text});
+      var range = Session.get('currentRange');
+      notes.push({range: range, container: range.container, text: text});
       Session.set('notes', notes);
       Session.set('currentRange', defaultRange);
     },
     'click .notes-counter': function(event) {
-      $('.paragraph-controls').toggleClass('active');
+      var currentControls = currentParagraphNotesContainer(event.target).
+        find('.paragraph-controls');
+      var wereActive = currentControls.hasClass('active');
+
+      $('.paragraph-controls').removeClass('active');
+
+      if (wereActive) return;
+      currentControls.addClass('active');
     },
     'mousedown p': clearHighlight,
-    'mouseup p': function() {
+    'mouseup p': function(event) {
       var selection = window.getSelection();
       if (!selection) return;
 
       var range = serializeRange(selection.getRangeAt(0));
       Session.set('currentRange', range);
 
-      $('.paragraph-controls').addClass('active');
-
-      $('#note-editor').focus();
+      $('.paragraph-controls').removeClass('active');
+      var currentParagraph = $(event.target).parent();
+      currentParagraph.find('.paragraph-controls').addClass('active');
+      currentParagraph.find('.note-editor').focus();
     },
     'mouseenter .note-text': function() {
       highlightRange(this.range);
     },
-    'focus #note-editor': function(event) {
+    'focus .note-editor': function(event) {
       highlightRange(Session.get('currentRange'));
     },
     'mouseleave .note-text': clearHighlight

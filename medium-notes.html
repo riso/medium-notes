@@ -19,11 +19,11 @@
       <div class="row">
         <p id="1" class="col-xs-9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat vulputate tortor, vel vulputate urna mollis ac. Vivamus viverra urna orci, semper ultrices eros convallis ut. Nunc a magna sit amet nibh ornare egestas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id pellentesque magna, sit amet efficitur purus. Cras sit amet lobortis nisl. Aliquam varius nisl dui, in blandit elit tempor vitae. Aenean laoreet accumsan tempor. Sed consequat urna ut odio elementum, in suscipit mauris imperdiet. Sed tempor libero quis hendrerit ultrices. Nunc ac accumsan metus.</p>
         <div class="col-xs-3 paragraph-notes">
-          <span class="notes-counter" data-count="{{notesCount}}"><i class="glyphicon glyphicon-comment" aria-hidden="true"></i></span>
-          <div class="slider-container">
+          <span class="notes-counter" data-count="{{notesCount id="1"}}"><i class="glyphicon glyphicon-comment" aria-hidden="true"></i></span>
+          <div class="notes-container">
             <div class="paragraph-controls slidedown">
               <ul class="notes-list">
-                {{#each notes}}
+                {{#each notes id="1"}}
                   <li class="note">
                     <h3 class="note-author">{{author}}</h3>
                     <div class="note-text">{{text}}</div>
@@ -33,8 +33,31 @@
                   {{/unless}}
                 {{/each}}
               </ul>
-              <textarea id="note-editor" class="form-control" type="text" name="text" placeholder="Add your note"></textarea>
-              <a id="add-node">Add Note</a>
+              <textarea class="form-control note-editor" type="text" name="text" placeholder="Add your note"></textarea>
+              <a class="add-note">Add Note</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <p id="2" class="col-xs-9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat vulputate tortor, vel vulputate urna mollis ac. Vivamus viverra urna orci, semper ultrices eros convallis ut. Nunc a magna sit amet nibh ornare egestas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id pellentesque magna, sit amet efficitur purus. Cras sit amet lobortis nisl. Aliquam varius nisl dui, in blandit elit tempor vitae. Aenean laoreet accumsan tempor. Sed consequat urna ut odio elementum, in suscipit mauris imperdiet. Sed tempor libero quis hendrerit ultrices. Nunc ac accumsan metus.</p>
+        <div class="col-xs-3 paragraph-notes">
+          <span class="notes-counter" data-count="{{notesCount id="2"}}"><i class="glyphicon glyphicon-comment" aria-hidden="true"></i></span>
+          <div class="notes-container">
+            <div class="paragraph-controls slidedown">
+              <ul class="notes-list">
+                {{#each notes id="2"}}
+                  <li class="note">
+                    <h3 class="note-author">{{author}}</h3>
+                    <div class="note-text">{{text}}</div>
+                  </li>
+                  {{#unless last}}
+                    <hr class="separator"/>
+                  {{/unless}}
+                {{/each}}
+              </ul>
+              <textarea class="form-control note-editor" type="text" name="text" placeholder="Add your note"></textarea>
+              <a class="add-note">Add Note</a>
             </div>
           </div>
         </div>
