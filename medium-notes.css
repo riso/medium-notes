@@ -1,6 +1,7 @@
 /* Bootstrap overrides I should't be doing here 
  * but I'm going to do anyway */
 body {
+	padding-top: 70px;
 }
 
 a {
@@ -30,8 +31,35 @@ p {
 	font-family: Baskerville, 'Baskerville Old Face', 'Hoefler Text', Garamond, 'Times New Roman', serif;
 }
 
+p a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+p a:hover {
+	cursor: inherit;
+	color: inherit;
+}
+
+
 hr:last-of-type {
 	display: none;
+}
+
+#header {
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	-webkit-transition: -webkit-transform .3s,height .2s linear;
+	-moz-transition: -moz-transform .3s,height .2s linear;
+	-o-transition: transform .3s,height .2s linear;
+	transition: transform .3s,height .2s linear;
+}
+
+#header.asleep {
+	-webkit-transform: translate3d(0,-70px,0);
+	-moz-transform: translate3d(0,-70px,0);
+	transform: translate3d(0,-70px,0);
 }
 
 .medium-notes {
@@ -40,6 +68,7 @@ hr:last-of-type {
 }
 
 .notes-counter:hover {
+	opacity: 1;
 	cursor: pointer;
 }
 .notes-counter:after {
@@ -58,6 +87,14 @@ hr:last-of-type {
 	border-radius: 4px;
 	background: #BF6D06;
 	padding: 1px 2px;
+}
+
+.notes-counter.focus {
+	opacity: 1;
+}
+
+.no-notes {
+	opacity: 0.25;
 }
 
 .highlight {
@@ -110,7 +147,7 @@ hr:last-of-type {
 	text-align: left;
 }
 
-#add-node {
-	font-size: small;
+.add-note {
+	font-size: smaller;
 }
 

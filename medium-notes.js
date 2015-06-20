@@ -1,6 +1,14 @@
+Notes = new Mongo.Collection("notes");
+
+Meteor.methods({
+  deleteNotes: function() {
+    Notes.remove({});
+  }
+});
+
 if (Meteor.isClient) {
 
-  Session.setDefault('notes', []);
+  Meteor.subscribe("notes");
 
   var defaultRange = {
     container: "1",
@@ -55,9 +63,7 @@ if (Meteor.isClient) {
   }
 
   function currentParagraphNotes(id) {
-    return _.filter(Session.get('notes'), function(note) {
-      return note.container == id;
-    });
+    return Notes.find({container: id}).fetch();
   }
 
   Template.main.helpers({
@@ -67,6 +73,9 @@ if (Meteor.isClient) {
     notesCount: function(context) {
       return currentParagraphNotes(context.hash.id).length;
     },
+    noNotes: function(context) {
+      return currentParagraphNotes(context.hash.id).length ? "": "no-notes";
+    },
     range: function() {
       return JSON.stringify(this.range);
     },
@@ -75,28 +84,52 @@ if (Meteor.isClient) {
     },
     author: function() {
       return "Anonymous";
-    }
+    },
   });
 
+  // We use jquery to capture scroll event since 
+  // meteor doesn't handle it properly
+  var previousScroll = 0;
+  $(window).scroll(function(){
+    var currentScroll = $(this).scrollTop();
+    if (currentScroll > 70) {
+      if (currentScroll > previousScroll) {
+        $('#header').addClass('asleep');
+      } else {
+        $('#header').removeClass('asleep');
+      }
+    } else {
+      $('#header').removeClass('asleep');
+    }
+    previousScroll = currentScroll;
+  });
   Template.main.events({
     'click .add-note': function (event) {
       var text = currentParagraphNotesContainer(event.target).find('.note-editor').val();
       $('.note-editor').val('');
-      var notes = Session.get('notes');
       var range = Session.get('currentRange');
-      notes.push({range: range, container: range.container, text: text});
-      Session.set('notes', notes);
+      Notes.insert({range: range, container: range.container, text: text});
       Session.set('currentRange', defaultRange);
+    },
+    'click #clear-notes': function() {
+      Meteor.call('deleteNotes');
     },
     'click .notes-counter': function(event) {
       var currentControls = currentParagraphNotesContainer(event.target).
         find('.paragraph-controls');
-      var wereActive = currentControls.hasClass('active');
+      var containerId = currentParagraphNotesContainer(event.target).parent().find('p').attr('id');
+      var wasActive = currentControls.hasClass('active');
 
       $('.paragraph-controls').removeClass('active');
+      $('.notes-counter').removeClass('focus');
+      var range = Session.get('currentRange');
+      range.container = containerId;
+      Session.set('currentRange', range);
 
-      if (wereActive) return;
+      if (wasActive) return;
       currentControls.addClass('active');
+      currentParagraphNotesContainer(event.target).find('.notes-counter').addClass('focus');
+
     },
     'mousedown p': clearHighlight,
     'mouseup p': function(event) {
