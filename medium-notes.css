@@ -1,5 +1,8 @@
 /* Bootstrap overrides I should't be doing here 
  * but I'm going to do anyway */
+body {
+}
+
 a {
 	color: rgba(255, 145, 8, 1);
 }
@@ -21,6 +24,15 @@ hr {
 }
 
 /* Application styles */
+
+p {
+	font-size: 20px;
+	font-family: Baskerville, 'Baskerville Old Face', 'Hoefler Text', Garamond, 'Times New Roman', serif;
+}
+
+hr:last-of-type {
+	display: none;
+}
 
 .medium-notes {
 	text-align: justify;
