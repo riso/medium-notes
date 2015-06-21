@@ -112,6 +112,10 @@ hr:last-of-type {
 	background: rgba(255, 145, 8, 1);
 }
 
+.paragraph-notes {
+	height: 0;
+}
+
 .notes-container {
 	padding: 0 0 0 28px;
 	height: 0;
