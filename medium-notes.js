@@ -66,12 +66,12 @@ if (Meteor.isClient) {
     return Notes.find({container: id}).fetch();
   }
 
-  Template.main.helpers({
-    notes: function(context) {
-      return currentParagraphNotes(context.hash.id);
+  Template.notes.helpers({
+    notes: function() {
+      return currentParagraphNotes(this.id);
     },
-    notesCount: function(context) {
-      return currentParagraphNotes(context.hash.id).length;
+    notesCount: function() {
+      return currentParagraphNotes(this.id).length;
     },
     range: function() {
       return JSON.stringify(this.range);
