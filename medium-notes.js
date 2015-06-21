@@ -58,8 +58,8 @@ if (Meteor.isClient) {
     };
   }
 
-  function currentParagraphNotesContainer(target) {
-    return $(target).parents('.paragraph-notes');
+  function currentParagraphContainer(target) {
+    return $(target).parents('.row');
   }
 
   function currentParagraphNotes(id) {
@@ -101,8 +101,9 @@ if (Meteor.isClient) {
     previousScroll = currentScroll;
   });
   Template.main.events({
-    'click .add-note': function (event) {
-      var text = currentParagraphNotesContainer(event.target).find('.note-editor').val();
+    'click .add-note, keypress .note-editor': function (event) {
+      if (event.type == "keypress" && event.which != 13) return;
+      var text = currentParagraphContainer(event.target).find('.note-editor').val();
       $('.note-editor').val('');
       var range = Session.get('currentRange');
       Notes.insert({range: range, container: range.container, text: text});
@@ -112,9 +113,9 @@ if (Meteor.isClient) {
       Meteor.call('deleteNotes');
     },
     'click .notes-counter': function(event) {
-      var currentControls = currentParagraphNotesContainer(event.target).
+      var currentControls = currentParagraphContainer(event.target).
         find('.paragraph-controls');
-      var containerId = currentParagraphNotesContainer(event.target).parent().find('p').attr('id');
+      var containerId = currentParagraphContainer(event.target).find('p').attr('id');
       var wasActive = currentControls.hasClass('active');
 
       $('.paragraph-controls').removeClass('active');
@@ -125,7 +126,7 @@ if (Meteor.isClient) {
 
       if (wasActive) return;
       currentControls.addClass('active');
-      currentParagraphNotesContainer(event.target).find('.notes-counter').addClass('focus');
+      currentParagraphContainer(event.target).find('.notes-counter').addClass('focus');
 
     },
     'mousedown p': clearHighlight,

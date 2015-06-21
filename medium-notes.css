@@ -72,6 +72,12 @@ hr:last-of-type {
 	margin: 0 auto;
 }
 
+.notes-counter {
+	float: left;
+	position: relative;
+	width: 3%;
+}
+
 .notes-counter:hover {
 	opacity: 1 !important;
 	cursor: pointer;
@@ -112,13 +118,12 @@ hr:last-of-type {
 	background: rgba(255, 145, 8, 1);
 }
 
-.paragraph-notes {
-	height: 0;
-}
-
 .notes-container {
-	padding: 0 0 0 28px;
+	float: left;
+	position: relative;
+	width: 22%;
 	height: 0;
+	padding: 0 0 0 5px;
 }
 
 .slidedown {
