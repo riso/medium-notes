@@ -108,6 +108,7 @@ if (Meteor.isClient) {
       var range = Session.get('currentRange');
       Notes.insert({range: range, container: range.container, text: text});
       Session.set('currentRange', defaultRange);
+      return false;
     },
     'click #clear-notes': function() {
       Meteor.call('deleteNotes');
@@ -150,7 +151,6 @@ if (Meteor.isClient) {
     },
     'mouseleave .note-text': clearHighlight
   });
-
 }
 
 if (Meteor.isServer) {

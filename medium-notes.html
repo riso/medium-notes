@@ -38,15 +38,17 @@
         <div class="notes-container">
           <div class="paragraph-controls slidedown">
             <ul class="notes-list">
-              {{#each notes id="1"}}
-                <li class="note">
-                  <h3 class="note-author">{{author}}</h3>
-                  <div class="note-text">{{text}}</div>
-                </li>
-                {{#unless last}}
-                  <hr class="separator"/>
-                {{/unless}}
-              {{/each}}
+              {{#momentum plugin='right-to-left'}}
+                {{#each notes id="1"}}
+                  <li class="note slide">
+                    <h3 class="note-author">{{author}}</h3>
+                    <div class="note-text">{{text}}</div>
+                  </li>
+                  {{#unless last}}
+                    <hr class="separator"/>
+                  {{/unless}}
+                {{/each}}
+              {{/momentum}}
             </ul>
             <textarea class="form-control note-editor" type="text" name="text" placeholder="Add your note"></textarea>
             <a class="add-note">Add Note</a>
