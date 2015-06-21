@@ -73,7 +73,7 @@ hr:last-of-type {
 }
 
 .notes-counter:hover {
-	opacity: 1;
+	opacity: 1 !important;
 	cursor: pointer;
 }
 .notes-counter:after {
@@ -95,11 +95,17 @@ hr:last-of-type {
 }
 
 .notes-counter.focus {
-	opacity: 1;
+	opacity: 1 !important;
 }
 
-.no-notes {
-	opacity: 0.25;
+.notes-counter[data-count="0"] {
+	opacity: 0.1;
+}
+
+.notes-counter[data-count="0"]:after{
+	content: "";
+	background: inherit;
+	border: inherit;
 }
 
 .highlight {

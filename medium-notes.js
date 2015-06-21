@@ -73,9 +73,6 @@ if (Meteor.isClient) {
     notesCount: function(context) {
       return currentParagraphNotes(context.hash.id).length;
     },
-    noNotes: function(context) {
-      return currentParagraphNotes(context.hash.id).length ? "": "no-notes";
-    },
     range: function() {
       return JSON.stringify(this.range);
     },
