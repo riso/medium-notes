@@ -75,7 +75,6 @@ hr:last-of-type {
 .notes-counter {
 	float: left;
 	position: relative;
-	width: 3%;
 }
 
 .notes-counter:hover {
@@ -121,7 +120,7 @@ hr:last-of-type {
 .notes-container {
 	float: left;
 	position: relative;
-	width: 22%;
+	width: 21%;
 	height: 0;
 	padding: 0 0 0 5px;
 }
@@ -169,4 +168,12 @@ hr:last-of-type {
 
 .add-note {
 	font-size: smaller;
+}
+
+/* Responsive styles */
+
+@media (min-width: 992px) {
+	.medium-notes {
+		margin: 0 12.5%;
+	}
 }
